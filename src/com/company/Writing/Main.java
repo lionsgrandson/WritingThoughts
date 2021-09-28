@@ -10,16 +10,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.DosFileAttributes;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
-import static java.awt.event.KeyEvent.VK_O;
-import static java.awt.event.KeyEvent.VK_S;
-//import static java.lang.ClassLoader.getClassLoader;
+import static java.awt.event.KeyEvent.*;
 
 public class Main {
-    //TODO system file for saving
-    //TODO password lock for the app
-    //TODO - no option to change the password
+    //TODO create new text file
 
     public static void main(String[] args) {
         try {
@@ -31,7 +30,7 @@ public class Main {
                 Files.copy(Paths.get("Resources/Save_16x16.png"), Paths.get("/source/Save_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
                 Files.copy(Paths.get("Resources/Open_16x16.png"), Paths.get("/source/Open_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             // nothing
         }
 
@@ -39,8 +38,14 @@ public class Main {
         JFrame frame = new JFrame("Thoughts");
         JPanel panel = new JPanel();
 
-        //Creating the TextArea
+        //creating the TextArea
         JTextArea textArea = new JTextArea();
+
+        //Creating password
+        JTextArea psField = new JTextArea();
+        JLabel ps = new JLabel("Password: ");
+        JButton btnPS = new JButton("Submit: ");
+
 
         //Creating menu parts
         JMenuBar menuBar = new JMenuBar();
@@ -60,6 +65,9 @@ public class Main {
         SaveItem.setIcon(new ImageIcon("/source/Save_16x16.png"));
         menu.setIcon(new ImageIcon("/source/Settings_16x16.png"));
 
+
+
+
         //TextArea settings
         textArea.setLineWrap(true);
         textArea.addKeyListener(saveKey(textArea));
@@ -67,19 +75,37 @@ public class Main {
         //ScrollPane settings
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(325, 300));
+        scrollPane.setVisible(false);
 
         //panel settings
         panel.setLayout(new BorderLayout(10, 10));
-        panel.setPreferredSize(new Dimension(400, 500));
+        panel.setPreferredSize(new Dimension(200, 75));
 
+        //Password settings
+        btnPS.addActionListener(e -> {
+            if(psField.getText().equals("DoNotEnter")){
+                ps.setVisible(false);
+                psField.setVisible(false);
+                btnPS.setVisible(false);
+                scrollPane.setVisible(true);
+                panel.add(scrollPane, BorderLayout.CENTER);
+                panel.setPreferredSize(new Dimension(400, 500));
+                frame.pack();
+            }else{
+                ps.setText("Nope, try again");
+            }
+        });
+        psField.addKeyListener(passwordKey(psField,ps,btnPS,scrollPane,panel,frame));
         //adding labels to the panel
         panel.add(new JLabel(""), BorderLayout.LINE_START);
         panel.add(new JLabel(""), BorderLayout.LINE_END);
         panel.add(new JLabel(""), BorderLayout.PAGE_END);
         panel.add(new JLabel(""), BorderLayout.PAGE_START);
+        panel.add(ps,BorderLayout.PAGE_START);
 
         //adding the content to the panel
-        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(psField,BorderLayout.CENTER);
+        panel.add(btnPS,BorderLayout.PAGE_END);
 
         //frame settings
         frame.setJMenuBar(menuBar);
@@ -90,14 +116,12 @@ public class Main {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     //The method that writes the text to the file
     public static void writeToFile(JTextArea textArea) {
         try {
             //creating the file instance
-
             File saveFile = new File("/source/savedThoughts.txt");
 
             //if the file doesn't exist create it
@@ -107,10 +131,13 @@ public class Main {
             setHiddenAttrib(saveFile);
 
             //creating the writer and appending so it won't override
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/source/savedThoughts.txt", true));
-            bufferedWriter.append(textArea.getText()).append("\n");
+            FileWriter fileWriter = new FileWriter("/source/savedThoughts.txt", true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.append(LocalDateTime.now()+ ": "+ textArea.getText()).append("\n");
+            bufferedWriter.newLine();
             textArea.setText("saved");
             bufferedWriter.close();
+            fileWriter.close();
 
 
         } catch (IOException e) {
@@ -165,7 +192,7 @@ public class Main {
                 }
                 if (e.isControlDown() && e.getKeyCode() == VK_S) {
                     writeToFile(textArea);
-                    System.out.println(e.getKeyCode());
+
                 }
             }
 
@@ -176,15 +203,41 @@ public class Main {
         };
         return keyListener;
     }
+    public static KeyListener passwordKey(JTextArea psField, JLabel ps, JButton btnPS, JScrollPane scrollPane, JPanel panel, JFrame frame){
+        KeyListener keyListener = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
 
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    if(psField.getText().equals("D")){
+                        ps.setVisible(false);
+                        psField.setVisible(false);
+                        btnPS.setVisible(false);
+                        scrollPane.setVisible(true);
+                        panel.add(scrollPane, BorderLayout.CENTER);
+                        panel.setPreferredSize(new Dimension(400, 500));
+                        frame.pack();
+                    }else{
+                        ps.setText("Nope, try again");
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        };
+        return keyListener;
+    }
     private static void setHiddenAttrib(File filePaths) {
         Path filePath = filePaths.toPath();
         try {
-            DosFileAttributes attr = Files.readAttributes(filePath, DosFileAttributes.class);
-            System.out.println(filePath.getFileName() + " Hidden attribute is " + attr.isHidden());
             Files.setAttribute(filePath, "dos:hidden", true);
-            attr = Files.readAttributes(filePath, DosFileAttributes.class);
-            System.out.println(filePath.getFileName() + " Hidden attribute is " + attr.isHidden());
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
