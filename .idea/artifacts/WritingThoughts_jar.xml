@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="WritingThoughts:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/WritingThoughts_jar</output-path>
+    <root id="archive" name="WritingThoughts.jar">
+      <element id="module-output" name="WritingThoughts" />
+    </root>
+  </artifact>
+</component>
