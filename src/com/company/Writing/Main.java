@@ -213,7 +213,7 @@ public class Main {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    if(psField.getText().equals("D")){
+                    if(psField.getText().equals("DoNotEnter")){
                         ps.setVisible(false);
                         psField.setVisible(false);
                         btnPS.setVisible(false);
