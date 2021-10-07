@@ -10,25 +10,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 import static java.awt.event.KeyEvent.*;
 
 public class Main {
     //TODO create new text file
+    //TODO keep files in the Jar
+    //TODO fix icons
 
     public static void main(String[] args) {
         try {
             File folder = new File("/source");
             folder.mkdir();
             if (!Files.exists(Paths.get("/source/Save_16x16.png"))) {
-                Files.copy(Paths.get("Resources/TextDocument_256x256.png"), Paths.get("/source/TextDocument_256x256.png"), StandardCopyOption.COPY_ATTRIBUTES);
-                Files.copy(Paths.get("Resources/Settings_16x16.png"), Paths.get("/source/Settings_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
-                Files.copy(Paths.get("Resources/Save_16x16.png"), Paths.get("/source/Save_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
-                Files.copy(Paths.get("Resources/Open_16x16.png"), Paths.get("/source/Open_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
+                Files.copy(Paths.get("src/Resources/TextDocument_256x256.png"), Paths.get("/source/TextDocument_256x256.png"), StandardCopyOption.COPY_ATTRIBUTES);
+                Files.copy(Paths.get("Settings_16x16.png"), Paths.get("/source/Settings_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
+                Files.copy(Paths.get("src/Resources/Save_16x16.png"), Paths.get("/source/Save_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
+                Files.copy(Paths.get("src/Resources/Open_16x16.png"), Paths.get("/source/Open_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
             }
         } catch (IOException e) {
             // nothing
