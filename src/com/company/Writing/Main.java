@@ -24,13 +24,13 @@ public class Main {
             File folder = new File("/source");
             folder.mkdir();
             if (!Files.exists(Paths.get("/source/Save_16x16.png"))) {
-                Files.copy(Paths.get("src/Resources/TextDocument_256x256.png"), Paths.get("/source/TextDocument_256x256.png"), StandardCopyOption.COPY_ATTRIBUTES);
+                Files.copy(Paths.get("TextDocument_256x256.png"), Paths.get("/source/TextDocument_256x256.png"), StandardCopyOption.COPY_ATTRIBUTES);
                 Files.copy(Paths.get("Settings_16x16.png"), Paths.get("/source/Settings_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
-                Files.copy(Paths.get("src/Resources/Save_16x16.png"), Paths.get("/source/Save_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
-                Files.copy(Paths.get("src/Resources/Open_16x16.png"), Paths.get("/source/Open_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
+                Files.copy(Paths.get("Save_16x16.png"), Paths.get("/source/Save_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
+                Files.copy(Paths.get("Open_16x16.png"), Paths.get("/source/Open_16x16.png"), StandardCopyOption.COPY_ATTRIBUTES);
             }
         } catch (IOException e) {
-            // nothing
+            e.printStackTrace();
         }
 
         //Creating the frame
