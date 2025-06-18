@@ -14,7 +14,6 @@ SecureJournal is a simple yet secure program that allows you to write and store 
 
 - **Password Protection:** Keep your journal entries private with a secure password.
 - **Simple Interface:** Intuitive and easy-to-use interface for a seamless journaling experience.
-- **Encrypted Storage:** Entries are securely encrypted to protect your personal information.
 - **Date Stamping:** Entries are automatically date-stamped for easy organization.
 
 ## Getting Started
